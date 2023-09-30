@@ -5,17 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Stancl\Tenancy\Database\Models\Domain;
 
-class DomainController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $domains = Domain::all();
-        return view('dashboard', ['domains' => $domains]);
+        $tenancy = Domain::all();
+        return view('admin', ['tenant' => $tenancy]);
     }
 
     /**
@@ -31,13 +32,25 @@ class DomainController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
-            'domain' => 'required|alpha:ascii'
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required'],
         ]);
+//        dd($request->tenant);
 
-        $tenant1 = Tenant::create(['id' => $validate['domain']]);
-        $tenant1->domains()->create(['domain' => $validate['domain'] . '.localhost']);
-        return back()->with(['msg' => "Domain Create Successfully"]);
+
+        $tanent = Tenant::find($request->tenant)->first();
+        $tanent->run(function () use ($request) {
+            $admin = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+//            $admin->assignRole('admin');
+        });
+
+        return back()->with(['msg' => "Admin Create Successfully"]);
     }
 
     /**
@@ -45,7 +58,7 @@ class DomainController extends Controller
      */
     public function show(string $id)
     {
-
+        //
     }
 
     /**
@@ -62,8 +75,6 @@ class DomainController extends Controller
     public function update(Request $request, string $id)
     {
         //
-
-
     }
 
     /**
@@ -71,8 +82,6 @@ class DomainController extends Controller
      */
     public function destroy(string $id)
     {
-        Domain::destroy($id);
-        return back()->with(['msg' => 'Domain Delete Successfully']);
+        //
     }
-
 }
