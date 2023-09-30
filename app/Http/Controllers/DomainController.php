@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Stancl\Tenancy\Database\Models\Domain;
 
 class DomainController extends Controller
 {
@@ -12,7 +14,8 @@ class DomainController extends Controller
      */
     public function index()
     {
-        //
+        $domains = Domain::all();
+        return view('dashboard', ['domains' => $domains]);
     }
 
     /**
@@ -43,7 +46,7 @@ class DomainController extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**
@@ -67,6 +70,7 @@ class DomainController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Domain::destroy($id);
+        return back()->with(['msg' => 'Domain Delete Successfully']);
     }
 }
