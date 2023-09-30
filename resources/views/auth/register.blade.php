@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <center><b>Super-Admin</b></center>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
