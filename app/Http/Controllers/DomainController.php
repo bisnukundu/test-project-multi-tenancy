@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Stancl\Tenancy\Database\Models\Domain;
 
 class DomainController extends Controller
@@ -37,6 +38,10 @@ class DomainController extends Controller
 
         $tenant1 = Tenant::create(['id' => $validate['domain']]);
         $tenant1->domains()->create(['domain' => $validate['domain'] . '.localhost']);
+
+        $tenant1->run(function () {
+            Artisan::call('create:roles');
+        });
         return back()->with(['msg' => "Domain Create Successfully"]);
     }
 

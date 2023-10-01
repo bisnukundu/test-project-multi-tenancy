@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Stancl\Tenancy\Database\Models\Domain;
 
@@ -47,7 +48,8 @@ class AdminController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-//            $admin->assignRole('admin');
+
+//            $admin->assignRole(['name' => 'admin']);
         });
 
         return back()->with(['msg' => "Admin Create Successfully"]);
