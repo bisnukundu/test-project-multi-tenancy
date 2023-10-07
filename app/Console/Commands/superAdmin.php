@@ -5,9 +5,9 @@ namespace App\Console\Commands;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
-class superAdmin extends Command
-{
+class superAdmin extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -25,13 +25,16 @@ class superAdmin extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
-    {
-        $user = User::create([
-            'name' => "Bisnu Kundu",
-            'email' => "bisnu@gmail.com",
-            'password' => Hash::make("password123"),
-        ]);
-        $this->info($user->name . " SuperAdmin Create Successfully");
+    public function handle() {
+        $user = User::create( [
+            'name'     => "Bisnu Kundu",
+            'email'    => "bisnu@gmail.com",
+            'password' => Hash::make( "password123" ),
+        ] );
+
+        if ( Role::where( 'name', 'superAdmin' )->exists() ) {
+            $user->assignRole( 'superAdmin' );
+        }
+        $this->info( $user->name . " SuperAdmin Create Successfully" );
     }
 }

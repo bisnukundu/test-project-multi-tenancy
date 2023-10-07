@@ -37,7 +37,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
+        // hVZY8AA1upBEmzr8MWTtn9Q7JJqzcYiJbaj1EPz0
+        // hVZY8AA1upBEmzr8MWTtn9Q7JJqzcYiJbaj1EPz0
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
